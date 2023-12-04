@@ -65,7 +65,7 @@ dotnet run --project GloboTicket.AppHost
 
 Following are ways to deploy this Application to Azure:
 
-1. Deploy to Azure Kubernetes Service (AKS)
+### Deploy to Azure Kubernetes Service (AKS)
 
 Dapr can be configured to run on any supported versions of Kubernetes. To achieve this, Dapr begins by deploying the following Kubernetes services, which provide first-class integration to make running applications with Dapr easy.
 
@@ -79,7 +79,7 @@ To get more information on Deploying Dapr Apps on Kubernetes , please do checkou
 - Deploying App Secrets to Kubernetes
 - Deploying Ingress controller for exposing applications to external clients
 
-2. Deploy to Azure Container Apps
+### Deploy to Azure Container Apps
 
 The final artifacts of a .NET Aspire application are .NET apps and configuration that can be deployed to your cloud environments. With the strong container-first mindset of .NET Aspire, the .NET SDK native container builds serve as a valuable tool to publish these apps to containers with ease.
 
