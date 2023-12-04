@@ -8,7 +8,7 @@ This solution is refactored to use .Net 8 and Aspire template, along with Dapr v
 Also, do read this blog post for more information on [Introducing .NET Aspire: Simplifying Cloud-Native Development with .NET 8](https://devblogs.microsoft.com/dotnet/introducing-dotnet-aspire-simplifying-cloud-native-development-with-dotnet-8/) while building and running this Sample for more deep dive.
 
 
-## Prerequisites to Run the Application
+## Pre-requisites to Run the Application
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  or later, and [Visual Studio 2022 Preview (17.9 Preview 1)](https://visualstudio.microsoft.com/vs/preview/)
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
