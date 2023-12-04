@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GloboTicket.Grpc";
+
+package API;
+
+message GetCouponByIdRequest {
+	string CouponId = 1;
+}
+
+
+message Coupon {
+	string CouponId = 1;
+	string Code = 2;
+	int32 Amount = 3;
+	bool AlreadyUsed = 4;
+}

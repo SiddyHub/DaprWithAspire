@@ -1,0 +1,29 @@
+﻿
+@model OrderViewModel
+
+
+<h2>Your orders</h2>
+<h4>Here is an overview of your orders.</h4>
+
+<table class="table">
+    <thead>
+        <tr class="columnHeader">
+            <th>ID</th>
+            <th>DATE</th>
+            <th>TOTAL</th>
+            <th>PAID?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.Orders)
+        {
+        <tr>
+            <td>@line.Id</td>
+            <td>@line.OrderPlaced.ToShortDateString()</td>
+            <td class="bold">$@line.OrderTotal</td>
+            <td class="bold">@line.OrderPaid</td>
+        </tr>
+        }
+    </tbody>
+</table>

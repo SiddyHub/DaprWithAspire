@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: sendmail  
+spec:
+  type: bindings.smtp
+  version: v1
+  metadata:
+  - name: host
+    value: localhost
+  - name: port
+    value: 1025
+  - name: user
+    value: "Siddy"
+  - name: password
+    value: "password123"
+  - name: skipTLSVerify
+    value: true
+scopes:
+  - order
+  - catalog    

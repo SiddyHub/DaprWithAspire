@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+  globoticket.services.discount:
+    image: ${DOCKER_REGISTRY-}globoticketservicesdiscount
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Discount/Dockerfile
+
+  globoticket.services.eventcatalog:
+    image: ${DOCKER_REGISTRY-}globoticketserviceseventcatalog
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.EventCatalog/Dockerfile
+
+
+  globoticket.services.ordering:
+    image: ${DOCKER_REGISTRY-}globoticketservicesordering
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Order/Dockerfile
+
+
+  globoticket.services.marketing:
+    image: ${DOCKER_REGISTRY-}globoticketservicesmarketing
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Marketing/Dockerfile
+
+
+  globoticket.services.payment:
+    image: ${DOCKER_REGISTRY-}globoticketservicespayment
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Payment/Dockerfile
+
+
+  globoticket.services.shoppingbasket:
+    image: ${DOCKER_REGISTRY-}globoticketservicesshoppingbasket
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.ShoppingBasket/Dockerfile
+
+
+  globoticket.web:
+    image: ${DOCKER_REGISTRY-}globoticketweb
+    build:
+      context: .
+      dockerfile: GloboTicket.Client/Dockerfile
+

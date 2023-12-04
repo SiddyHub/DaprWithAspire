@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  labels:
+    app: catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog
+  template:
+    metadata:
+      labels:
+        app: catalog
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "catalog"
+        dapr.io/app-port: "80"
+        dapr.io/config: "config"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"
+        dapr.io/sidecar-liveness-probe-delay-seconds: "6"
+        dapr.io/log-level: "debug"        
+    spec:
+      containers:
+      - name: catalog
+        image: siddocker29/globoticket.services.eventcatalog:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.15"
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: ASPNETCORE_URLS
+          value: http://+:80          
+        - name: CosmosDb__Endpoint
+          valueFrom: 
+            secretKeyRef:
+              name: cosmosdb
+              key: Endpoint    
+        - name: CosmosDb__Key
+          valueFrom: 
+            secretKeyRef:
+              name: cosmosdb
+              key: Key 
+        - name: CosmosDb__DatabaseName
+          value: EventCatalog        

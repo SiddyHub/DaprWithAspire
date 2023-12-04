@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: globoapp-dapr-ingress
+  namespace: default              
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - app.<your IP Address>.nip.io
+      secretName: tls-secret
+  rules:
+  - host: app.<your IP Address>.nip.io
+    http:
+      paths:       
+      - path: /
+        pathType: Prefix
+        backend:        
+          service:
+            name: frontend
+            port: 
+              number: 80
+      - path: /v1.0/invoke
+        pathType: Prefix
+        backend:        
+          service:
+            name: nginx-ingress-dapr
+            port: 
+              number: 80                            

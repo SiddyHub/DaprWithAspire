@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "payment"
+        dapr.io/app-port: "80"
+        dapr.io/config: "config"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"        
+        dapr.io/sidecar-liveness-probe-delay-seconds: "6"
+        dapr.io/log-level: "debug"
+    spec:
+      containers:
+      - name: payment
+        image: siddocker29/globoticket.services.payment:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.15"
+        imagePullPolicy: Always
+        env:        
+        - name: ApiConfigs__ExternalPaymentGateway__Uri          
+          value: "<your API URL>"                                         

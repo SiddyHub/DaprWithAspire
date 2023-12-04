@@ -1,0 +1,235 @@
+version: '3.4'
+
+services:
+  globoticket.services.discount:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80    
+      - ConnectionStrings__DefaultConnection=Data Source=db;Database=GloboTicketDiscountDb;Integrated Security=False;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    ports:     
+      - "5007:80"
+      - "50007:50001"
+      - "3507:3500"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.discount-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "discountgrpc",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50007",
+     "-dapr-http-port", "3507",
+     "-app-protocol", "grpc",
+     "-app-ssl", "true",
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.discount"
+    depends_on:
+      - globoticket.services.discount
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    expose:
+      - "1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=yourStrong(!)Password
+    volumes:
+      - eshop-sqldata:/var/opt/mssql
+    networks:
+      - hello-dapr
+
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - hello-dapr
+   
+  globoticket.services.eventcatalog:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80      
+    ports:     
+      - "5001:80"
+      - "50001:50001"
+      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.eventcatalog-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "catalog",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50001",       
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.eventcatalog"
+    depends_on:
+      - globoticket.services.eventcatalog
+
+
+  globoticket.services.ordering:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80    
+      - ConnectionStrings__DefaultConnection=Data Source=db;Database=GloboTicketOrderDb;Integrated Security=False;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    ports:     
+      - "5005:80"
+      - "50009:50001"      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.ordering-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "order",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50009",       
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.ordering"
+    depends_on:
+      - globoticket.services.ordering
+
+  globoticket.services.marketing:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80    
+      - ConnectionStrings__DefaultConnection=Data Source=db;Database=GloboTicketMarketingDb;Integrated Security=False;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    ports:     
+      - "5010:80"
+      - "50010:50001"      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.marketing-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "marketing",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50010",       
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.marketing"
+    depends_on:
+      - globoticket.services.marketing
+
+  globoticket.services.payment:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80          
+    ports:     
+      - "5006:80"
+      - "50008:50001"      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.payment-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "payment",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50008",       
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.payment"
+    depends_on:
+      - globoticket.services.payment
+
+  globoticket.services.shoppingbasket:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80    
+      - ConnectionStrings__DefaultConnection=Data Source=db;Database=GloboTicketShoppingBasketDb;Integrated Security=False;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    ports:     
+      - "5002:80"
+      - "50002:50001"      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+  globoticket.services.shoppingbasket-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd",
+     "-app-id", "shoppingbasket",
+     "-app-port", "80",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50002",       
+     "-components-path", "/AzComponents",
+     "-config", "/AzComponents/config.yaml"]
+    volumes:
+        - "./AzComponents/:/components"
+    network_mode: "service:globoticket.services.shoppingbasket"
+    depends_on:
+      - globoticket.services.shoppingbasket
+
+  globoticket.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80    
+      - ConnectionStrings__DefaultConnection=Data Source=db;Database=GloboTicketShoppingBasketDb;Integrated Security=False;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    ports:     
+      - "5000:80"
+      - "35000:50001"      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+    networks:
+      - hello-dapr
+
+networks:
+    hello-dapr:
+
+volumes:
+  eshop-sqldata:
+    external: false

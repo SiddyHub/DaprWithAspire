@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.1.23557.2" />
+    <PackageReference Include="Aspire.Hosting.Dapr" Version="8.0.0-preview.1.23557.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\External.PaymentGateway\External.PaymentGateway.csproj" />
+    <ProjectReference Include="..\GloboTicket.Client\GloboTicket.Web.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.Discount\GloboTicket.Services.Discount.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.EventCatalog\GloboTicket.Services.EventCatalog.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.Marketing\GloboTicket.Services.Marketing.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.Order\GloboTicket.Services.Ordering.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.Payment\GloboTicket.Services.Payment.csproj" />
+    <ProjectReference Include="..\GloboTicket.Services.ShoppingBasket\GloboTicket.Services.ShoppingBasket.csproj" />
+  </ItemGroup>
+
+</Project>

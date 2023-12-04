@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: frontend   
+spec:
+  selector:
+    app: frontend  
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "frontend"
+        dapr.io/app-port: "80"
+        dapr.io/config: "config"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"        
+        dapr.io/sidecar-liveness-probe-delay-seconds: "6"
+        dapr.io/log-level: "debug"
+    spec:
+      containers:
+      - name: frontend
+        image: siddocker29/globoticketweb:latest
+        env: 
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: ASPNETCORE_URLS
+          value: http://+:80            
+        ports:
+        - containerPort: 80                               
+        resources:
+          limits:
+            cpu: "0.15"  
+        imagePullPolicy: Always    

@@ -1,0 +1,22 @@
+﻿@model GloboTicket.Web.Models.Api.Event
+
+<form asp-action="Details" method="post" class="form-horizontal" role="form">
+    <h4>Change price for event @Model.Name</h4>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="EventId" />
+    <div class="form-group">
+        <label class="col-md-2 control-label">New price</label>
+        <div class="col-md-5">
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <input type="submit" class="btn btn-primary" value="Change price" />
+        </div>
+    </div>
+</form>

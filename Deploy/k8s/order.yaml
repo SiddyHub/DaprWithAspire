@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "order"
+        dapr.io/app-port: "80"
+        dapr.io/config: "config"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"        
+        dapr.io/sidecar-liveness-probe-delay-seconds: "6"
+        dapr.io/log-level: "debug"
+    spec:
+      containers:
+      - name: order
+        image: siddocker29/globoticket.services.order:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.15"
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: ASPNETCORE_URLS
+          value: http://+:80
+        - name: ConnectionStrings__DefaultConnection          
+          valueFrom: 
+            secretKeyRef:
+              name: ordering-db
+              key: connectionstring                                          
