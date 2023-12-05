@@ -4,7 +4,10 @@ using System.Collections.Immutable;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddDapr();
+builder.AddDapr(new DaprOptions
+{
+    EnableTelemetry = true
+});
 
 builder.AddProject<Projects.GloboTicket_Services_Discount>("globoticket.services.discount")
     .WithDaprSidecar(new DaprSidecarOptions
