@@ -50,7 +50,10 @@ To download and run the sample, follow these steps:
     1. On the menu bar, choose **File** > **Open** > **Project/Solution**.
     2. Navigate to the folder that holds the unzipped sample code, and open the solution (.sln) file.
     3. Right click the _GloboTicket.AppHost_ project in the solution explore and choose it as the startup project.
-    4. Choose the <kbd>F5</kbd> key to run with debugging, or <kbd>Ctrl</kbd>+<kbd>F5</kbd> keys to run the project without debugging.
+    4. Enter Azure Service Bus Connection String in `secrets.json` file in individual service projects and client project under **"AzComponents"** folder.
+    5. Enter Azure Redis Cache Host and Key in `secrets.json` file in individual service projects and client project under **"AzComponents"** folder. (If using Azure, make sure Non-SSL port is enabled)
+    6. Enter Azure Cosmos DB Endpoint and Key in `appsettings.json` file under **"EventCatalog"** services folder.
+    7. Choose the <kbd>F5</kbd> key to run with debugging, or <kbd>Ctrl</kbd>+<kbd>F5</kbd> keys to run the project without debugging.
 3. From the command line:
    1. Navigate to the folder that holds the unzipped sample code.
    2. At the command line, type [`dotnet run`](https://docs.microsoft.com/dotnet/core/tools/dotnet-run).
@@ -92,7 +95,7 @@ Please refer [this link](https://learn.microsoft.com/en-us/dotnet/aspire/deploym
 ## Troubleshooting notes
 
 - If using Azure Service Bus as a Pub Sub Message broker make sure to enter primary connection string value for **"servicebus"** key in `secrets.json` in individual service projects and client project under **"AzComponents"** folder.
-- If using Azure Redis Cache as a State Store, make sure to enter **Redis Host and Key**  value in `secrets.json` in individual service projects and client project under **"AzComponents"** folder. Also make sure Non-SSL port is enabled.
+- If using Azure Redis Cache as a State Store, make sure to enter **Redis Host and Key**  value in `secrets.json` in individual service projects and client project under **"AzComponents"** folder. Also make sure Non-SSL port is enabled for Azure Redis Cache.
 - For Cosmos DB make sure to enter Endpoint and Key in `apsettings.json` file "CosmosDb" section in EventCatalog Service Project.
 - If mail binding is not working, make sure `maildev` docker image is running locally. Refer [this link](https://github.com/maildev/maildev) for more info.
 - For any more service issues, we can check Zipkin trace logs or Aspire Dashboard.
