@@ -51,7 +51,7 @@ namespace GloboTicket.Web.Services
             basket.Lines.Add(basketLine);            
             logger.LogInformation($"SAVING BASKET {basket.BasketId}");
             await SaveBasketToStateStore(basket);
-            daprClient.CreateInvokeMethodRequest(HttpMethod.Post, "shoppingbasket", $"/api/baskets/{basket.UserId}/basketlines", basketLineForCreation);
+            daprClient.CreateInvokeMethodRequest<BasketLineForCreation>("shoppingbasket", $"/api/baskets/{basket.UserId}/basketlines", basketLineForCreation);
             return basketLine;
         }
 

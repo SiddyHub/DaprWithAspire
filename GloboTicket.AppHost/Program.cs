@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddDapr(new DaprOptions
+builder.AddDapr(dapr =>
 {
-    EnableTelemetry = true
+    dapr.EnableTelemetry = true;
 });
 
-builder.AddProject<Projects.GloboTicket_Services_Discount>("globoticket.services.discount")
+builder.AddProject<Projects.GloboTicket_Services_Discount>("globoticket-services-discount")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "discountgrpc",
@@ -23,7 +23,7 @@ builder.AddProject<Projects.GloboTicket_Services_Discount>("globoticket.services
     });
 
 
-builder.AddProject<Projects.GloboTicket_Services_Ordering>("globoticket.services.ordering")
+builder.AddProject<Projects.GloboTicket_Services_Ordering>("globoticket-services-ordering")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "order",
@@ -35,7 +35,7 @@ builder.AddProject<Projects.GloboTicket_Services_Ordering>("globoticket.services
         AppPort = 5005
     });
 
-builder.AddProject<Projects.GloboTicket_Services_EventCatalog>("globoticket.services.eventcatalog")
+builder.AddProject<Projects.GloboTicket_Services_EventCatalog>("globoticket-services-eventcatalog")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "catalog",
@@ -47,7 +47,7 @@ builder.AddProject<Projects.GloboTicket_Services_EventCatalog>("globoticket.serv
         AppPort = 5001
     });
 
-builder.AddProject<Projects.GloboTicket_Services_ShoppingBasket>("globoticket.services.shoppingbasket")
+builder.AddProject<Projects.GloboTicket_Services_ShoppingBasket>("globoticket-services-shoppingbasket")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "shoppingbasket",
@@ -59,7 +59,7 @@ builder.AddProject<Projects.GloboTicket_Services_ShoppingBasket>("globoticket.se
         AppPort = 5002
     });
 
-builder.AddProject<Projects.GloboTicket_Services_Marketing>("globoticket.services.marketing")
+builder.AddProject<Projects.GloboTicket_Services_Marketing>("globoticket-services-marketing")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "marketing",
@@ -71,9 +71,9 @@ builder.AddProject<Projects.GloboTicket_Services_Marketing>("globoticket.service
         AppPort = 5010
     });
 
-var external_payment = builder.AddProject<Projects.External_PaymentGateway>("external_paymentgateway");
+var externalPayment = builder.AddProject<Projects.External_PaymentGateway>("external-paymentgateway");
 
-builder.AddProject<Projects.GloboTicket_Services_Payment>("globoticket.services.payment")
+builder.AddProject<Projects.GloboTicket_Services_Payment>("globoticket-services-payment")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "payment",
@@ -84,9 +84,9 @@ builder.AddProject<Projects.GloboTicket_Services_Payment>("globoticket.services.
         DaprHttpPort = 3506,
         AppPort = 5006
     })
-    .WithReference(external_payment);
+    .WithReference(externalPayment);
 
-builder.AddProject<Projects.GloboTicket_Web>("globoticket.web")
+builder.AddProject<Projects.GloboTicket_Web>("globoticket-web")
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "frontend",
